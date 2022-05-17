@@ -42,7 +42,8 @@ app.post("/add/user", (req, res) => {
 });
 
 app.get("/get/users", (req, res) => {
-  const sqlGetUsers = "SELECT * FROM users";
+  const sqlGetUsers =
+    "SELECT `user_id`, `name`, `email`, `password`, `created_at`, `updated_at`, `deleted_at`, `status`   FROM `users_posts`.`users`";
   let options = {};
   db.query(sqlGetUsers, (err, result) => {
     if (!err) {
@@ -142,7 +143,8 @@ app.post("/add/post", (req, res) => {
 });
 
 app.get("/get/posts", (req, res) => {
-  const sqlGetPosts = "SELECT * FROM posts";
+  const sqlGetPosts =
+    "SELECT `id`, `user_id`, `title`, `description`, `published`, `created_at`, `updated_at`, `deleted_at`, `status` FROM `users_posts`.`posts`";
   let options = {};
   db.query(sqlGetPosts, (err, result) => {
     if (!err) {
