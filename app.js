@@ -2,63 +2,43 @@ const express = require("express");
 const app = express();
 const body = require("body-parser");
 const cors = require("cors");
-const mysql = require("mysql");
-const req = require("express/lib/request");
 
-const db = mysql.createPool({
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "users_posts",
-});
+const db = require("./src/helper/mysql");
 
 app.use(cors());
 app.use(express.json());
 app.use(body.urlencoded({ extended: true }));
 const port = 5000;
 
+// let sampleApp = express.Router().get("/sam", function (req, res) {
+//   res.send("Hello World");
+// });
+// app.use("/sam", sampleApp);
+let application = require("./src/")(express.Router(), app);
+app.use("/", application);
 app.get("/", (req, res) => {
   res.send("hello");
 });
 
-app.post("/add/user", (req, res) => {
-  const { name, email, password } = req.body;
-  let options = {};
-  const sqlAddUser =
-    "INSERT INTO users (name, email, password) VALUES (?, ?, ?)";
-  db.query(sqlAddUser, [name, email, password], (err, result) => {
-    if (!err) {
-      options.response = result;
-      options.status = 200;
-      options.error = null;
-      res.send(options);
-    } else {
-      options.response = null;
-      options.status = 500;
-      options.error = err;
-      res.send(options);
-    }
-  });
-});
-
-app.get("/get/users", (req, res) => {
-  const sqlGetUsers =
-    "SELECT `user_id`, `name`, `email`, `password`, `created_at`, `updated_at`, `deleted_at`, `status`   FROM `users_posts`.`users`";
-  let options = {};
-  db.query(sqlGetUsers, (err, result) => {
-    if (!err) {
-      options.response = result;
-      options.status = 200;
-      options.error = null;
-      res.send(options);
-    } else {
-      options.response = null;
-      options.status = 500;
-      options.error = err;
-      res.send(options);
-    }
-  });
-});
+// app.post("/add/user", (req, res) => {
+//   const { name, email, password } = req.body;
+//   let options = {};
+//   const sqlAddUser =
+//     "INSERT INTO users (name, email, password) VALUES (?, ?, ?)";
+//   db.query(sqlAddUser, [name, email, password], (err, result) => {
+//     if (!err) {
+//       options.response = result;
+//       options.status = 200;
+//       options.error = null;
+//       res.send(options);
+//     } else {
+//       options.response = null;
+//       options.status = 500;
+//       options.error = err;
+//       res.send(options);
+//     }
+//   });
+// });
 
 app.get("/get/userbyid/:id", (req, res) => {
   const { id } = req.params;
