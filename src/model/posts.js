@@ -1,19 +1,19 @@
 const db = require("../helper/mysql");
 module.exports = (options) => {
   return {
-    getUsers,
-    adduser,
-    getUserById,
-    updateUser,
-    deleteUser,
+    getPosts,
+    addPosts,
+    getpostById,
+    updatePost,
+    deletePost,
   };
 };
 
-const getUsers = (payload, callback) => {
-  const sqlGetUsers =
-    "SELECT `user_id`, `name`, `email`, `password`, `created_at`, `updated_at`, `deleted_at`, `status`   FROM `users_posts`.`users`";
+const getPosts = (payload, callback) => {
+  const sqlGetPosts =
+    "SELECT `id`, `user_id`, `title`, `description`, `published`, `created_at`, `updated_at`, `deleted_at`, `status` FROM `users_posts`.`posts`";
   let options = {};
-  db.query(sqlGetUsers, (err, result) => {
+  db.query(sqlGetPosts, (err, result) => {
     if (!err) {
       options.response = result;
       options.status = 200;
@@ -28,15 +28,15 @@ const getUsers = (payload, callback) => {
   });
 };
 
-const adduser = (payload, callback) => {
+const addPosts = (payload, callback) => {
   let options = {};
   console.log(payload);
-  const { name, email, password } = payload;
-  const props = [name, email, password];
+  const { user_id, title, description } = payload;
+  const props = [user_id, title, description];
   console.log(props);
-  const sqlAddUser =
-    "INSERT INTO users (name, email, password) VALUES (?, ?,?)";
-  db.query(sqlAddUser, props, (err, result) => {
+  const sqlAddpost =
+    "INSERT INTO posts (user_id, title, description) VALUES (?, ?, ?)";
+  db.query(sqlAddpost, props, (err, result) => {
     if (!err) {
       options.response = result;
       options.status = 201;
@@ -51,13 +51,13 @@ const adduser = (payload, callback) => {
   });
 };
 
-const getUserById = (data, callback) => {
+const getpostById = (data, callback) => {
   console.log(`Data ${data}`);
   let options = {};
   const { id } = data.id;
   console.log(id);
-  const sqlGetUserById = "SELECT * FROM users WHERE user_id = ?";
-  db.query(sqlGetUserById, id, (err, result) => {
+  const sqlGetPostById = "SELECT * FROM posts WHERE id = ?";
+  db.query(sqlGetPostById, id, (err, result) => {
     if (!err) {
       options.response = result;
       options.status = 200;
@@ -72,14 +72,14 @@ const getUserById = (data, callback) => {
   });
 };
 
-const updateUser = (data, callback) => {
+const updatePost = (data, callback) => {
   console.log(data);
   let options = {};
-  const { id, name, email, password } = data;
-  const props = [id, name, email, password];
-  const sqlUpdateUser =
-    "UPDATE users SET name = ?, email= ?, password = ? WHERE user_id = ?";
-  db.query(sqlUpdateUser, props, (err, result) => {
+  const { id, title, description } = data;
+  const props = [id, title, description];
+  const sqlUpdatePost =
+    "UPDATE posts SET title = ?, description = ? WHERE id = ?";
+  db.query(sqlUpdatePost, props, (err, result) => {
     if (!err) {
       options.response = result;
       options.status = 200;
@@ -94,14 +94,14 @@ const updateUser = (data, callback) => {
   });
 };
 
-const deleteUser = (data, callback) => {
+const deletePost = (data, callback) => {
   console.log(`Data ${data}`);
   let options = {};
   const { id } = data.id;
   console.log(id);
-  const sqlDeleteUser = "DELETE FROM users WHERE user_id = ?";
-  console.log(sqlDeleteUser);
-  db.query(sqlDeleteUser, id, (err, result) => {
+  const sqlDeletePost = "DELETE FROM posts WHERE id = ?";
+  console.log(sqlDeletePost);
+  db.query(sqlDeletePost, id, (err, result) => {
     if (!err) {
       options.response = result;
       options.status = 200;

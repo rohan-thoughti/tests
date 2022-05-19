@@ -1,4 +1,5 @@
 const { response } = require("express");
+const res = require("express/lib/response");
 
 const model = require("../model/users")({});
 
@@ -7,6 +8,8 @@ module.exports = (options) => {
     getUsers: getUsers,
     adduser,
     getUserById,
+    updateUser,
+    deleteUser,
   };
 };
 
@@ -30,11 +33,38 @@ const adduser = (req, res) => {
 };
 
 const getUserById = (req, res) => {
+  console.log(req);
   let data = {
-    id: req.body,
+    id: req.params,
   };
-  //   console.log(data);
+  console.log(data);
   model.getUserById(data, (response) => {
+    res.send(response);
+  });
+};
+
+const updateUser = (req, res) => {
+  console.log(req);
+  const { id } = req.params;
+  let data = {
+    id,
+    name: req.body.name,
+    email: req.body.email,
+    password: req.body.password,
+  };
+
+  console.log(data);
+  model.updateUser(data, (response) => {
+    res.send(response);
+  });
+};
+
+const deleteUser = (req, res) => {
+  console.log(req);
+  let data = {
+    id: req.params,
+  };
+  model.deleteUser(data, (response) => {
     res.send(response);
   });
 };
