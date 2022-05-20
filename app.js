@@ -3,21 +3,17 @@ const app = express();
 const body = require("body-parser");
 const cors = require("cors");
 
-const db = require("./src/helper/mysql");
-
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(body.urlencoded({ extended: true }));
 const port = 5000;
 
-// let sampleApp = express.Router().get("/sam", function (req, res) {
-//   res.send("Hello World");
-// });
-// app.use("/sam", sampleApp);
-let application = require("./src/")(express.Router(), app);
+let application = require("./src/routes/index");
 app.use("/", application);
+
 app.get("/", (req, res) => {
-  res.send("hello");
+  res.send("hello Users");
 });
 
 app.listen(port, () => {

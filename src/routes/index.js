@@ -1,18 +1,18 @@
-const usersController = require("../controller/users")({});
-const postController = require("../controller/posts")({});
-module.exports = (router, expressApp) => {
-  router.get("/get/users", usersController.getUsers);
-  router.post("/add/user", usersController.adduser);
-  router.get("/get/userbyid/:id", usersController.getUserById);
-  router.patch("/update/user/:id", usersController.updateUser);
-  router.delete("/delete/user/:id", usersController.deleteUser);
+const usersController = require("../controller/users");
+// const postController = require("../controller/posts")({});
 
-  //POsts
+const router = require("express").Router();
+router.get("/users", usersController.getUsers);
+router.post("/users", usersController.addUser);
+// router.get("/users/:id", usersController.getUserById);
+// router.patch("/users/:id", usersController.updateUser);
+// router.delete("/users/:id", usersController.deleteUsder);
 
-  router.get("/get/posts", postController.getPosts);
-  router.post("/add/post", postController.addPosts);
-  router.get("/get/postbyid/:id", postController.getpostById);
-  router.patch("/update/posts/:id", postController.updatePost);
-  router.delete("/delete/post/:id", postController.deletePost);
-  return router;
-};
+//POsts
+
+// router.get("/get/posts", postController.getPosts);
+// router.post("/add/post", postController.addPosts);
+// router.get("/get/postbyid/:id", postController.getpostById);
+// router.patch("/update/posts/:id", postController.updatePost);
+// router.delete("/delete/post/:id", postController.deletePost);
+module.exports = router;
