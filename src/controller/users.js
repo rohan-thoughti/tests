@@ -19,12 +19,34 @@ const addUser = async (req, res) => {
     });
   }
 };
+
 const getUsers = async (req, res) => {
   const getUser = await users.findAll({});
   res.status(200).send(getUser);
 };
 
+const getUserById = async (req, res) => {
+  const id = req.params.id;
+  const getUserById = await users.findOne({ where: { user_id: id } });
+  res.status(200).send(getUserById);
+};
+
+const updateUser = async (req, res) => {
+  let id = req.params.id;
+  const updateUser = await users.update(req.body, { where: { user_id: id } });
+  res.status(200).send(updateUser);
+};
+
+const deleteUser = async (req, res) => {
+  let id = req.params.id;
+  await users.destroy({ where: { user_id: id } });
+  res.status(200).send("User Removed");
+};
+
 module.exports = {
   addUser,
   getUsers,
+  getUserById,
+  updateUser,
+  deleteUser,
 };

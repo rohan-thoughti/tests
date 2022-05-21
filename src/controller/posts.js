@@ -1,65 +1,52 @@
-// const model = require("../model/posts")({});
-// module.exports = (options) => {
-//   return {
-//     getPosts,
-//     addPosts,
-//     getpostById,
-//     updatePost,
-//     deletePost,
-//   };
-// };
+const db = require("../model");
 
-// const getPosts = (req, res) => {
-//   let payload = {};
-//   model.getPosts(payload, function (response) {
-//     res.send(response);
-//   });
-// };
+const posts = db.posts;
 
-// const addPosts = (req, res) => {
-//   let data = req.body;
-//   let payload = {
-//     user_id: data.user_id,
-//     title: data.title,
-//     description: data.description,
-//   };
-//   model.addPosts(payload, (response) => {
-//     res.send(response);
-//   });
-// };
+const addPosts = async (req, res) => {
+  const payload = {
+    user_id: req.body.user_id,
+    title: req.body.title,
+    description: req.body.description,
+    published: req.body.published,
+    status: req.body.status,
+  };
+  try {
+    const createPost = await posts.create(payload);
+    res.status(200).send(createPost);
+  } catch (err) {
+    res.status(500).send({
+      message: err.message || "Error Occured",
+    });
+  }
+};
 
-// const getpostById = (req, res) => {
-//   console.log(req);
-//   let data = {
-//     id: req.params,
-//   };
-//   console.log(data);
-//   model.getpostById(data, (response) => {
-//     res.send(response);
-//   });
-// };
+const getPosts = async (req, res) => {
+  const getPosts = await posts.findAll({});
+  res.status(200).send(getPosts);
+};
 
-// const updatePost = (req, res) => {
-//   console.log(req);
-//   const { id } = req.params;
-//   let data = {
-//     id,
-//     title: req.body.title,
-//     description: req.body.description,
-//   };
+const getpostById = async (req, res) => {
+  const id = req.params.id;
+  const getpostById = await posts.findOne({ where: { id: id } });
+  res.status(200).send(getpostById);
+};
 
-//   console.log(data);
-//   model.updatePost(data, (response) => {
-//     res.send(response);
-//   });
-// };
+const updatePost = async (req, res) => {
+  let id = req.params.id;
+  const updatePost = await posts.update(req.body, { where: { id: id } });
+  res.status(200).send(updatePost);
+};
 
-// const deletePost = (req, res) => {
-//   console.log(req);
-//   let data = {
-//     id: req.params,
-//   };
-//   model.deletePost(data, (response) => {
-//     res.send(response);
-//   });
-// };
+const deletePost = async (req, res) => {
+  let id = req.params.id;
+  await posts.destroy({ where: { id: id } });
+  res.status(200).send("Post Deleted");
+};
+
+module.exports = {
+  addPosts,
+  getPosts,
+  getpostById,
+  updatePost,
+  deletePost,
+};
