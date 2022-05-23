@@ -11,6 +11,8 @@ module.exports = (sequelize, DataTypes) => {
         model: "users",
         key: "user_id",
       },
+      onDelete: "cascade",
+      onUpdate: "cascade",
     },
     title: {
       type: DataTypes.STRING,

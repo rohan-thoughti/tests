@@ -1,8 +1,12 @@
-const db = require("../model");
+const db = require("../../model");
 
 const users = db.users;
 
 const addUser = async (req, res) => {
+  if (!req.body.name || !req.body.email || !req.body.password) {
+    res.status(400).send({ message: "Required All fields" });
+    return;
+  }
   const payload = {
     name: req.body.name,
     email: req.body.email,

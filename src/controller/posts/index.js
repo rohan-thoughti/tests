@@ -1,8 +1,12 @@
-const db = require("../model");
+const db = require("../../model");
 
 const posts = db.posts;
 
 const addPosts = async (req, res) => {
+  if (!req.body.title || !req.body.description) {
+    res.status(400).send({ message: "Requirded All fields" });
+    return;
+  }
   const payload = {
     user_id: req.body.user_id,
     title: req.body.title,
