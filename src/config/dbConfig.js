@@ -1,13 +1,13 @@
 module.exports = {
-  HOST: "localhost",
-  USER: "root",
-  PASSWORD: "",
-  DB: "user_post",
-  dialect: "mysql",
+  HOST: process.env.DB_HOST,
+  USER: process.env.DB_USER,
+  PASSWORD: process.env.DB_PASS,
+  DB: process.env.DB_NAME,
+  dialect: process.env.DB_DIALECT,
   pool: {
-    max: 5,
-    min: 0,
-    acquire: 30000,
-    idle: 100000,
+    max: parseInt(process.env.DB_MAX),
+    min: parseInt(process.env.DB_MIN),
+    acquire: process.env.DB_ACQUIRE,
+    idle: process.env.DB_IDLE,
   },
 };
