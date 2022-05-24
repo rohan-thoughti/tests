@@ -2,10 +2,10 @@
   "name": "tests",
   "version": "1.0.0",
   "description": "first test",
-  "main": "src/index.js",
+  "main": "src/server.js",
   "scripts": {
-    "start": "node app.js",
-    "dev": "nodemon app.js",
+    "start": "node ./src/server.js",
+    "dev": "nodemon ./src/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -19,15 +19,10 @@
   },
   "homepage": "https://github.com/rohan-thoughti/tests#readme",
   "dependencies": {
-    "body-parser": "^1.20.0",
     "cors": "^2.8.5",
     "dotenv": "^16.0.1",
-    "ejs": "^3.1.8",
     "express": "^4.18.1",
-    "mysql": "^2.18.1",
     "mysql2": "^2.3.3",
-    "passport": "^0.5.3",
-    "passport-local": "^1.0.0",
     "sequelize": "^6.19.2",
     "sequelize-cli": "^6.4.1"
   },

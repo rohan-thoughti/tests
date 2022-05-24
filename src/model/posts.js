@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  const posts = sequelize.define("post", {
+  const Posts = sequelize.define("post", {
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
@@ -38,5 +38,5 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.BOOLEAN,
     },
   });
-  return posts;
+  return Posts;
 };

@@ -1,11 +1,18 @@
-const db = require("../../model");
-
-const users = db.users;
+const Models = require("../../model");
+var { commonHelpers } = require("../../helpers");
 
 const addUser = async (req, res) => {
   if (!req.body.name || !req.body.email || !req.body.password) {
-    res.status(400).send({ message: "Required All fields" });
-    return;
+    return res.status(400).send({ message: "Require All fields" });
+  }
+
+  const checkEmail = req.body.email;
+  const findEmail = await Models.Users.findOne({
+    where: { email: checkEmail },
+  });
+
+  if (findEmail) {
+    return res.send({ message: `${checkEmail} This email already Exist` });
   }
   const payload = {
     name: req.body.name,
@@ -14,37 +21,129 @@ const addUser = async (req, res) => {
     status: req.body.status ? req.body.status : false,
   };
   try {
-    const createUser = await users.create(payload);
-    res.status(200).send(createUser);
-    console.log(createUser);
+    const createUser = await Models.Users.create(payload);
+    return commonHelpers.generateApiResponse(
+      res,
+      req,
+      "User Created",
+      200,
+      createUser
+    );
   } catch (err) {
-    res.status(500).send({
-      message: err.message || "Error Occured",
-    });
+    return commonHelpers.generateApiResponse(
+      res,
+      req,
+      "Error While creating User",
+      500,
+      []
+    );
   }
 };
 
+// TODO Refer this function
 const getUsers = async (req, res) => {
-  const getUser = await users.findAll({});
-  res.status(200).send(getUser);
+  const allUsers = await Models.Users.findAndCountAll();
+  if (
+    allUsers == null ||
+    typeof allUsers.count == "undefined" ||
+    allUsers.count <= 0
+  ) {
+    return commonHelpers.generateApiResponse(
+      res,
+      req,
+      "No data found.",
+      404,
+      []
+    );
+  }
+
+  return commonHelpers.generateApiResponse(
+    res,
+    req,
+    "Data found.",
+    200,
+    allUsers
+  );
 };
 
 const getUserById = async (req, res) => {
   const id = req.params.id;
-  const getUserById = await users.findOne({ where: { user_id: id } });
-  res.status(200).send(getUserById);
+  const findId = await Models.Users.findOne({ where: { user_id: id } });
+  if (!findId) {
+    return commonHelpers.generateApiResponse(
+      res,
+      req,
+      `User Id ${id} Not Found`,
+      404,
+      []
+    );
+  }
+  const getUserById = await Models.Users.findOne({
+    where: {
+      user_id: id,
+    },
+  });
+  return commonHelpers.generateApiResponse(
+    res,
+    req,
+    "User Found",
+    200,
+    getUserById
+  );
 };
 
 const updateUser = async (req, res) => {
   let id = req.params.id;
-  const updateUser = await users.update(req.body, { where: { user_id: id } });
-  res.status(200).send(updateUser);
+  let findId = await Models.Users.findOne({
+    where: { user_id: id },
+  });
+  if (!findId) {
+    return commonHelpers.generateApiResponse(
+      res,
+      req,
+      `|User Id ${id} Not Found`,
+      404,
+      []
+    );
+  }
+  const updateUser = await Models.Users.update(req.body, {
+    where: {
+      user_id: id,
+    },
+  });
+  return commonHelpers.generateApiResponse(
+    res,
+    req,
+    `User Id ${id} Data updated`,
+    200,
+    updateUser
+  );
 };
 
 const deleteUser = async (req, res) => {
   let id = req.params.id;
-  await users.destroy({ where: { user_id: id } });
-  res.status(200).send("User Removed");
+  let findId = await Models.Users.findOne({ where: { user_id: id } });
+  if (!findId) {
+    return commonHelpers.generateApiResponse(
+      res,
+      req,
+      `User Id ${id} Not Found`,
+      404,
+      []
+    );
+  }
+  await Models.Users.destroy({
+    where: {
+      user_id: id,
+    },
+  });
+  return commonHelpers.generateApiResponse(
+    res,
+    req,
+    `User Id ${id} Deleted`,
+    200,
+    []
+  );
 };
 
 module.exports = {

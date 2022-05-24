@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  const users = sequelize.define("user", {
+  const Users = sequelize.define("user", {
     user_id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
@@ -29,5 +29,5 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.BOOLEAN,
     },
   });
-  return users;
+  return Users;
 };

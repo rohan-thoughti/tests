@@ -1,10 +1,10 @@
-const db = require("../../model");
+const Models = require("../../model");
 
-const posts = db.posts;
+var { commonHelpers } = require("../../helpers");
 
 const addPosts = async (req, res) => {
   if (!req.body.title || !req.body.description) {
-    res.status(400).send({ message: "Requirded All fields" });
+    res.status(400).send({ message: "Require All fields" });
     return;
   }
   const payload = {
@@ -15,36 +15,110 @@ const addPosts = async (req, res) => {
     status: req.body.status,
   };
   try {
-    const createPost = await posts.create(payload);
-    res.status(200).send(createPost);
+    const createPost = await Models.Posts.create(payload);
+    return commonHelpers.generateApiResponse(
+      res,
+      req,
+      `User Posted`,
+      200,
+      createPost
+    );
   } catch (err) {
-    res.status(500).send({
-      message: err.message || "Error Occured",
-    });
+    return commonHelpers.generateApiResponse(
+      res,
+      req,
+      `User is not found to Post`,
+      404,
+      []
+    );
   }
 };
 
 const getPosts = async (req, res) => {
-  const getPosts = await posts.findAll({});
-  res.status(200).send(getPosts);
+  const getPosts = await Models.Posts.findAndCountAll({});
+  if (
+    getPosts == null ||
+    typeof getPosts.count == "undefined" ||
+    getPosts.count <= 0
+  ) {
+    return commonHelpers.generateApiResponse(
+      res,
+      req,
+      "Posts Not Found",
+      404,
+      []
+    );
+  }
+  return commonHelpers.generateApiResponse(
+    res,
+    req,
+    "Users Posts",
+    200,
+    getPosts
+  );
 };
 
 const getpostById = async (req, res) => {
   const id = req.params.id;
-  const getpostById = await posts.findOne({ where: { id: id } });
-  res.status(200).send(getpostById);
+  const findId = await Models.Posts.findOne({ where: { id: id } });
+  if (!findId) {
+    return commonHelpers.generateApiResponse(
+      res,
+      req,
+      `User Id ${id} Not Found`,
+      404,
+      []
+    );
+  }
+  const getpostById = await Models.Posts.findOne({ where: { id: id } });
+  return commonHelpers.generateApiResponse(
+    res,
+    req,
+    `User found`,
+    200,
+    getpostById
+  );
 };
 
 const updatePost = async (req, res) => {
   let id = req.params.id;
-  const updatePost = await posts.update(req.body, { where: { id: id } });
-  res.status(200).send(updatePost);
+
+  let findId = await Models.Posts.findOne({ where: { id: id } });
+  if (!findId) {
+    return commonHelpers.generateApiResponse(
+      res,
+      req,
+      `User Id ${id} Not Found`,
+      404,
+      []
+    );
+  }
+  const updatePost = await Models.Posts.update(req.body, {
+    where: { id: id },
+  });
+  return commonHelpers.generateApiResponse(
+    res,
+    req,
+    `User Id ${id} Data updated`,
+    200,
+    updatePost
+  );
 };
 
 const deletePost = async (req, res) => {
   let id = req.params.id;
-  await posts.destroy({ where: { id: id } });
-  res.status(200).send("Post Deleted");
+  let findId = await Models.Posts.findOne({ where: { id: id } });
+  if (!findId) {
+    return commonHelpers.generateApiResponse(
+      res,
+      req,
+      `User Id ${id} Not Found`,
+      404,
+      []
+    );
+  }
+  await Models.Posts.destroy({ where: { id: id } });
+  return commonHelpers.generateApiResponse(res, req, `Post Deleted`, 200, []);
 };
 
 module.exports = {
