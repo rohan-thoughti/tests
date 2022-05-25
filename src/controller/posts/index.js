@@ -1,4 +1,4 @@
-const Models = require("../../model");
+const Models = require("../../models");
 
 var { commonHelpers } = require("../../helpers");
 
