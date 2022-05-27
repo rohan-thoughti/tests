@@ -1,4 +1,5 @@
 const Models = require("../../models");
+var bCrypt = require("bcrypt-nodejs");
 var { commonHelpers } = require("../../helpers");
 
 const addUser = async (req, res) => {
@@ -14,10 +15,15 @@ const addUser = async (req, res) => {
   if (findEmail) {
     return res.send({ message: `${checkEmail} This email already Exist` });
   }
+
+  var generateHash = function () {
+    return bCrypt.hashSync(req.body.password, bCrypt.genSaltSync(8), null);
+  };
+  var userPassword = generateHash();
   const payload = {
     name: req.body.name,
     email: req.body.email,
-    password: req.body.password,
+    password: userPassword,
     status: req.body.status ? req.body.status : false,
   };
   try {
@@ -39,6 +45,8 @@ const addUser = async (req, res) => {
     );
   }
 };
+
+const login = async (req, res) => {};
 
 // TODO Refer this function
 const getUsers = async (req, res) => {
@@ -152,4 +160,5 @@ module.exports = {
   getUserById,
   updateUser,
   deleteUser,
+  login,
 };

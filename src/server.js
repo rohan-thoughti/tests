@@ -3,15 +3,13 @@ let http = require("http");
 let https = require("https");
 let fs = require("fs");
 
-let {
-  commonHelpers
-} = require("./helpers");
+let { commonHelpers } = require("./helpers");
 let app = require("./app");
 
 const DEV_ENV = process.env.NODE_ENV || "development";
-const HTTPS = process.env.HTTPS ?
-  JSON.parse(process.env.HTTPS.toLowerCase()) :
-  true;
+const HTTPS = process.env.HTTPS
+  ? JSON.parse(process.env.HTTPS.toLowerCase())
+  : true;
 
 // Disabling TLS validation in non production environment
 if (DEV_ENV != "production") {
@@ -26,8 +24,7 @@ let server = null;
 // Create an express https server with self-signed ssl
 if (HTTPS == true) {
   API_URL =
-    "https://" + process.env.API_URL_BASE ||
-    `https://localhost:${APP_PORT}`;
+    "https://" + process.env.API_URL_BASE || `https://localhost:${APP_PORT}`;
   // Set SSL Certificates
   let SSL_CRT_FILE = process.env.SSL_CRT_FILE || "./src/ssl/cert.pem";
   let SSL_KEY_FILE = process.env.SSL_KEY_FILE || "./src/ssl/key.pem";
