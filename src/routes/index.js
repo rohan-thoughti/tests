@@ -1,8 +1,6 @@
 const router = require("express").Router();
 
 let { commonHelpers } = require("../helpers");
-const userRoutes = require("./users");
-const postRoutes = require("./posts");
 
 router.get("/", (req, res) => {
   return commonHelpers.generateApiResponse(
@@ -12,8 +10,5 @@ router.get("/", (req, res) => {
     200
   );
 });
-
-router.use("/", userRoutes);
-router.use("/", postRoutes);
 
 module.exports = router;

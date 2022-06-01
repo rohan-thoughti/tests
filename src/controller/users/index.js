@@ -1,6 +1,6 @@
 const Models = require("../../models");
-var bCrypt = require("bcrypt-nodejs");
-var { commonHelpers } = require("../../helpers");
+
+var { commonHelpers, encryptionHelpers } = require("../../helpers");
 
 const addUser = async (req, res) => {
   if (!req.body.name || !req.body.email || !req.body.password) {
@@ -16,16 +16,18 @@ const addUser = async (req, res) => {
     return res.send({ message: `${checkEmail} This email already Exist` });
   }
 
-  var generateHash = function () {
-    return bCrypt.hashSync(req.body.password, bCrypt.genSaltSync(8), null);
-  };
-  var userPassword = generateHash();
+  // var generateHash = function () {
+  //   return bCrypt.hashSync(req.body.password, bCrypt.genSaltSync(8), null);
+  // };
+  var generateHash = await encryptionHelpers.generateHash(req.body.password);
+
   const payload = {
     name: req.body.name,
     email: req.body.email,
-    password: userPassword,
+    password: generateHash,
     status: req.body.status ? req.body.status : false,
   };
+  console.log("payload: ", payload);
   try {
     const createUser = await Models.Users.create(payload);
     return commonHelpers.generateApiResponse(
@@ -36,11 +38,12 @@ const addUser = async (req, res) => {
       createUser
     );
   } catch (err) {
+    console.log(err);
     return commonHelpers.generateApiResponse(
       res,
       req,
       "Error While creating User",
-      500,
+      400,
       []
     );
   }

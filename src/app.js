@@ -21,7 +21,7 @@ app.use(
 );
 
 const models = require("../src/models");
-
+require("../src/config/passport");
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
@@ -32,9 +32,14 @@ app.use(
 //Passport strategies
 app.use(passport.initialize());
 app.use(passport.session());
-require("../src/routes/auth")(app, passport);
+app.use("/", routerMain);
+var authRoutes = require("../src/routes/auth");
+var usersRoutes = require("../src/routes/users");
+var postsRoutes = require("../src/routes/posts");
+app.use("/", authRoutes);
+app.use("/", passport.authenticate("jwt", { session: false }), usersRoutes);
+app.use("/", passport.authenticate("jwt", { session: false }), postsRoutes);
 
-require("../src/config/passport")(passport, models.Users);
 models.sequelize
   .sync()
   .then(function () {
@@ -43,8 +48,6 @@ models.sequelize
   .catch(function (err) {
     console.log(`Database Not Connected`);
   });
-
-app.use("/", routerMain);
 
 app.use((req, res, next) => {
   const err = new Error(process.env.ERR_404);
