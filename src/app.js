@@ -20,7 +20,7 @@ app.use(
   })
 );
 
-const models = require("../src/models");
+// const models = require("../src/models");
 require("../src/config/passport");
 app.use(
   session({
@@ -40,14 +40,14 @@ app.use("/", authRoutes);
 app.use("/", passport.authenticate("jwt", { session: false }), usersRoutes);
 app.use("/", passport.authenticate("jwt", { session: false }), postsRoutes);
 
-models.sequelize
-  .sync()
-  .then(function () {
-    console.log("Database Connected");
-  })
-  .catch(function (err) {
-    console.log(`Database Not Connected`);
-  });
+// models.sequelize
+//   .sync()
+//   .then(function () {
+//     console.log("Database Connected");
+//   })
+//   .catch(function (err) {
+//     console.log(`Database Not Connected`);
+//   });
 
 app.use((req, res, next) => {
   const err = new Error(process.env.ERR_404);

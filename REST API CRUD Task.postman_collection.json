@@ -1,9 +1,8 @@
 {
 	"info": {
-		"_postman_id": "9fa3d038-63aa-420f-a46f-edb982d884cf",
+		"_postman_id": "253d72a8-e1b3-4910-bc0e-b682d5a9e591",
 		"name": "REST API CRUD Task",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "13463457"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
@@ -16,7 +15,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"email\":\"test18@gmail.com\",\r\n    \"password\":\"joy\"\r\n}",
+							"raw": "{\r\n    \"email\":\"admin@gmail.com\",\r\n    \"password\":\"123456\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -53,7 +52,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyMiwiaWF0IjoxNjU0MDg2MDk0LCJleHAiOjE2NTQwODk2OTR9.5mTkLemk6OsSaYJ55-v6O1NPAaHhD6cPgtKPhL2qbdc",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxMSwiaWF0IjoxNjU0MTUxMzM2LCJleHAiOjE2NTQxNTQ5MzZ9.0yoF6W2aMMpjc0bpL78dKFn0O2th1AJSc6BxrXCttS4",
 								"type": "text"
 							}
 						],

@@ -27,7 +27,6 @@ const addUser = async (req, res) => {
     password: generateHash,
     status: req.body.status ? req.body.status : false,
   };
-  console.log("payload: ", payload);
   try {
     const createUser = await Models.Users.create(payload);
     return commonHelpers.generateApiResponse(
@@ -38,7 +37,6 @@ const addUser = async (req, res) => {
       createUser
     );
   } catch (err) {
-    console.log(err);
     return commonHelpers.generateApiResponse(
       res,
       req,

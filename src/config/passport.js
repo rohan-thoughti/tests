@@ -22,14 +22,12 @@ passport.use(
       var isValidPassword = function (userpass, password) {
         return bCrypt.compare(password, userpass);
       };
-      console.log(`Logged to ${email}`);
       Models.Users.findOne({
         where: {
           email: email,
         },
       })
         .then(function (user) {
-          console.log(user);
           if (!user) {
             return done(null, false, {
               message: "Email dose not Exist",
@@ -44,7 +42,6 @@ passport.use(
           return done(null, userInfo);
         })
         .catch(function (err) {
-          console.log(`Error ${err}`);
           return done(null, false, {
             message: "Something went wrong with Signin",
           });

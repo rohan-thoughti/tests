@@ -11,10 +11,8 @@ const home = (req, res) => {
 };
 
 const logout = (req, res) => {
-  console.log("Log Out Route Hit");
   req.session.destroy(function (err) {
-    if (err) console.log(err);
-    res.send({ message: "User Logged Out" });
+    if (err) res.send({ message: "User Logged Out" });
   });
 };
 module.exports = {

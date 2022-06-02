@@ -5,7 +5,7 @@ const path = require("path");
 const { Sequelize, DataTypes } = require("sequelize");
 const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || "development";
-const config = require(__dirname + "/../config/config.json")[env];
+const config = require(__dirname + "/../config/config.js")[env];
 const db = {};
 
 let sequelize;
@@ -46,8 +46,8 @@ db.Sequelize = Sequelize;
 db.Users = require("./users")(sequelize, DataTypes);
 db.Posts = require("./posts")(sequelize, DataTypes);
 
-db.sequelize.sync({ force: false }).then(() => {
-  console.log(`Drop and re-sync db.`);
-});
+// db.sequelize.sync({ force: false }).then(() => {
+//   console.log(`Drop and re-sync db.`);
+// });
 
 module.exports = db;
