@@ -33,13 +33,19 @@ passport.use(
               message: "Email dose not Exist",
             });
           }
-          if (!isValidPassword(user.password, password)) {
-            return done(null, false, {
-              message: "Incorrect Password",
-            });
-          }
-          var userInfo = user.get();
-          return done(null, userInfo);
+          let passworValidationPromise = isValidPassword(
+            user.password,
+            password
+          );
+          passworValidationPromise.then((isValid) => {
+            if (!isValid) {
+              return done(null, false, {
+                message: "Incorrect Password",
+              });
+            }
+            var userInfo = user.get();
+            return done(null, userInfo);
+          });
         })
         .catch(function (err) {
           return done(null, false, {

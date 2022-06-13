@@ -8,7 +8,7 @@ var bcrypt = require("bcrypt");
 const BCRYPT_SALT_ROUNDS = 10;
 
 module.exports = {
-  up: (queryInterface, Sequelize) => {
+  up: async (queryInterface, Sequelize) => {
     return queryInterface.bulkInsert(
       "users",
       [
@@ -16,7 +16,7 @@ module.exports = {
           user_id: 1,
           name: "Admin",
           email: "admin@gmail.com",
-          password: bcrypt.hashSync("123456", BCRYPT_SALT_ROUNDS),
+          password: await bcrypt.hash("123456", BCRYPT_SALT_ROUNDS),
           created_at: moment(new Date()).format("YYYY-MM-DD HH:mm:ss"),
           updated_at: null,
           deleted_at: null,
@@ -26,7 +26,7 @@ module.exports = {
           user_id: 2,
           name: "Test User 1",
           email: "user1@gmail.com",
-          password: bcrypt.hashSync("123456", BCRYPT_SALT_ROUNDS),
+          password: await bcrypt.hash("123456", BCRYPT_SALT_ROUNDS),
           created_at: moment(new Date()).format("YYYY-MM-DD HH:mm:ss"),
           updated_at: null,
           deleted_at: null,

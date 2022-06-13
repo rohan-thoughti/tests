@@ -13,7 +13,13 @@ const addUser = async (req, res) => {
   });
 
   if (findEmail) {
-    return res.send({ message: `${checkEmail} This email already Exist` });
+    return commonHelpers.generateApiResponse(
+      res,
+      req,
+      `${checkEmail} This email already Exist`,
+      404,
+      []
+    );
   }
 
   // var generateHash = function () {
@@ -110,7 +116,7 @@ const updateUser = async (req, res) => {
     return commonHelpers.generateApiResponse(
       res,
       req,
-      `|User Id ${id} Not Found`,
+      `User Id ${id} Not Found`,
       404,
       []
     );
