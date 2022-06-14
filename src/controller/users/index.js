@@ -121,7 +121,14 @@ const updateUser = async (req, res) => {
       []
     );
   }
-  const updateUser = await Models.Users.update(req.body, {
+  var generateHash = await encryptionHelpers.generateHash(req.body.password);
+  const payload = {
+    name: req.body.name,
+    email: req.body.email,
+    password: generateHash,
+    status: req.body.status ? req.body.status : false,
+  };
+  const updateUser = await Models.Users.update(payload, {
     where: {
       user_id: id,
     },
