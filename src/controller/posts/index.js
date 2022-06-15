@@ -132,8 +132,7 @@ const deletePost = async (req, res) => {
       []
     );
   }
-  const { user_id } = req.user.dataValues;
-  await Models.Posts.destroy({ where: { id: user_id } });
+  await Models.Posts.destroy({ where: { id: id } });
   return commonHelpers.generateApiResponse(res, req, `Post Deleted`, 200, []);
 };
 
