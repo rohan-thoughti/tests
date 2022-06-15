@@ -22,9 +22,6 @@ const addUser = async (req, res) => {
     );
   }
 
-  // var generateHash = function () {
-  //   return bCrypt.hashSync(req.body.password, bCrypt.genSaltSync(8), null);
-  // };
   var generateHash = await encryptionHelpers.generateHash(req.body.password);
 
   const payload = {

@@ -7,8 +7,9 @@ const addPosts = async (req, res) => {
     res.status(400).send({ message: "Require All fields" });
     return;
   }
+  const { user_id } = req.user.dataValues;
   const payload = {
-    user_id: req.body.user_id,
+    user_id: user_id,
     title: req.body.title,
     description: req.body.description,
     published: req.body.published,
@@ -35,7 +36,13 @@ const addPosts = async (req, res) => {
 };
 
 const getPosts = async (req, res) => {
-  const getPosts = await Models.Posts.findAndCountAll({});
+  const { user_id } = req.user.dataValues;
+  const getPosts = await Models.Posts.findAndCountAll({
+    where: {
+      user_id: user_id,
+    },
+  });
+
   if (
     getPosts == null ||
     typeof getPosts.count == "undefined" ||
@@ -93,7 +100,15 @@ const updatePost = async (req, res) => {
       []
     );
   }
-  const updatePost = await Models.Posts.update(req.body, {
+  const { user_id } = req.user.dataValues;
+  const payload = {
+    user_id: user_id,
+    title: req.body.title,
+    description: req.body.description,
+    published: req.body.published,
+    status: req.body.status,
+  };
+  const updatePost = await Models.Posts.update(payload, {
     where: { id: id },
   });
   return commonHelpers.generateApiResponse(
@@ -117,7 +132,8 @@ const deletePost = async (req, res) => {
       []
     );
   }
-  await Models.Posts.destroy({ where: { id: id } });
+  const { user_id } = req.user.dataValues;
+  await Models.Posts.destroy({ where: { id: user_id } });
   return commonHelpers.generateApiResponse(res, req, `Post Deleted`, 200, []);
 };
 
