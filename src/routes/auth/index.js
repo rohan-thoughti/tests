@@ -16,6 +16,7 @@ router.post("/login", (req, res, next) => {
       }
       const payload = {
         user_id: user.user_id,
+        name: user.name,
       };
       const options = {
         subject: `${user.user_id}`,

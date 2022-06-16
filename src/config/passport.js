@@ -66,7 +66,7 @@ passport.use(
         if (user) {
           done(null, user);
         } else {
-          done(err, false);
+          done(user, false);
         }
       });
     } catch (err) {
